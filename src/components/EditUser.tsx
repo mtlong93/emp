@@ -9,37 +9,46 @@ import {
 import { Error } from "@progress/kendo-react-labels";
 import { Input } from "@progress/kendo-react-inputs";
 import { Button } from "@progress/kendo-react-buttons";
-import "@progress/kendo-theme-default/dist/all.css";
 import {
   Dialog,
   DialogActionsBar,
   DialogCloseEvent,
   Window,
 } from "@progress/kendo-react-dialogs";
+import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
-import { values } from "mobx";
-
+import { emailValidator } from "../utils/validation";
+import {
+  FormComboBox,
+  FormDatePicker,
+  FormInput,
+} from "../utils/formCoponents";
 interface IshowDlg {
   showDlg: () => void;
 }
+
+const genderData = ["Male", "Female"];
 
 export const EditUser = (props: any) => {
   // User store
   const { users, editUser } = useUserStore();
 
   // set first name
-  const [firstName, setName] = useState("");
-  const onChange = (element: any) => {
-    setName(element.target.value);
-  };
+  const [fullName, setName] = useState("");
+  const [female, setFemale] = useState(false);
+  const [birthday, setBirthday] = useState(new Date());
+  const [email, setEmail] = useState("");
 
   // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const selUser: User = {
       id: props.selectedUser.id,
-      name: firstName,
+      fullName: fullName,
+      female: female,
+      birthday: birthday,
+      email: email,
     };
     editUser(selUser);
     props.showDlg();
@@ -52,7 +61,10 @@ export const EditUser = (props: any) => {
         onSubmit={handleSubmit}
         initialValues={{
           id: props.selectedUser.id,
-          firstName: props.selectedUser.name,
+          fullName: props.selectedUser.fullName,
+          female: props.selectedUser.female,
+          birthday: props.selectedUser.birthday,
+          email: props.selectedUser.email,
         }}
         render={(formRenderProps: FormRenderProps) => (
           <FormElement style={{ maxWidth: 650 }}>
@@ -71,12 +83,42 @@ export const EditUser = (props: any) => {
                 </div>
                 <div className="mb-3">
                   <Field
-                    name={"firstName"}
-                    //value={props.selectedUser.name}
-                    value={firstName}
-                    onChange={onChange}
-                    component={Input}
+                    name={"fullName"}
+                    value={fullName}
+                    onChange={(element: any) => setName(element.target.value)}
+                    component={FormInput}
                     label={"First name"}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Field
+                    name={"female"}
+                    value={female}
+                    onChange={(element: any) => setFemale(element.target.value)}
+                    component={FormComboBox}
+                    data={genderData}
+                    label={"Gender"}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Field
+                    name={"birthday"}
+                    value={birthday}
+                    onChange={(element: any) =>
+                      setBirthday(element.target.value)
+                    }
+                    component={FormDatePicker}
+                    label={"Birthday"}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Field
+                    name={"email"}
+                    value={email}
+                    onChange={(element: any) => setEmail(element.target.value)}
+                    component={FormInput}
+                    label={"Email"}
+                    validator={emailValidator}
                   />
                 </div>
               </fieldset>

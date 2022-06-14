@@ -1,6 +1,7 @@
-import React from "react";
-
 export interface User {
     id: number;
-    name: string;
+    fullName: string;
+    female: boolean;
+    birthday: Date;
+    email: string;
   }

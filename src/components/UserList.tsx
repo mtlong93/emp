@@ -7,7 +7,6 @@ import {
   GridCellProps,
 } from "@progress/kendo-react-grid";
 import { Button } from "@progress/kendo-react-buttons";
-import "@progress/kendo-theme-default/dist/all.css";
 import { AddUser } from "./AddUser";
 import { EditUser } from "./EditUser";
 import { CommandButton } from "./CommandCell";
@@ -40,15 +39,18 @@ export const UserList = observer(() => {
   // Main
   return (
     <div>
-      <h1>Employee Management System</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Employee Management System</h1>
       <Grid data={users}>
         <GridToolbar>
           <Button onClick={load}> Load User </Button>
           <Button onClick={() => setshowAddDlg(true)}> Add User </Button>
         </GridToolbar>
-        <Column field="id" title="Id" width="50px" />
-        <Column field="name" title="Name" />
-        <Column cell={EditDelButton} width="240px" />
+        <Column field="id" title="Id" width="40px"/>
+        <Column field="fullName" title="Name" width="150px"/>
+        <Column field="female" title="Sex" width="100px"/>
+        <Column field="birthday" title="Birthday" width="210px"/>
+        <Column field="email" title="Email" width="300px"/>
+        <Column cell={EditDelButton} width="100px"/>
       </Grid>
 
       {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} />}
