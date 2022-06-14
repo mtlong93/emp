@@ -17,28 +17,33 @@ import {
   DialogCloseEvent,
   Window,
 } from "@progress/kendo-react-dialogs";
-import store from "../store";
 import { User } from "../utils/user";
-import { values } from "mobx";
+import { useUserStore } from "../store";
 
 interface IshowDlg {
   showDlg: () => void;
 }
 
 export const AddUser = (props: IshowDlg) => {
+  // Store
+  const { addUser } = useUserStore();
+  // set firstName
   const [firstName, setName] = useState("");
 
   const onChange = (element: any) => {
     setName(element.target.value);
   };
 
+  // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const newUser: User = {
       id: 0,
       name: firstName,
     };
-    store.addUser(newUser);
+    console.log(newUser);
+    addUser(newUser);
+    props.showDlg();
   };
 
   // Main
@@ -64,14 +69,14 @@ export const AddUser = (props: IshowDlg) => {
                 </div>
               </fieldset>
               <div className="k-form-buttons">
-                <button
+                <Button
                   type={"submit"}
                   onClick={handleSubmit}
                   className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-base"
                   disabled={!formRenderProps.allowSubmit}
                 >
                   Submit
-                </button>
+                </Button>
               </div>
             </Dialog>
           </FormElement>

@@ -1,33 +1,41 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, configure, runInAction, toJS } from "mobx";
+import { useContext, createContext } from "react";
 import { request } from "./utils/request";
 import { User } from "./utils/user";
+configure({ enforceActions: "always" });
 
-class Store {
-  users: User[] = [];
+class UserStore {
+  private _users: User[] = [];
+  private _error: any;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  load() {
-    request
-      .get("User/")
-      .then((res) => {
-        this.users = res.data;
-      })
-      .catch((error) => {
-        this.users = error.data;
-      })
-      .then(function () {
-        // always executed
-      });
+  get users(): User[] {
+    return toJS(this._users);
   }
+
+  load = async () => {
+    runInAction(() => {
+      let that = this;
+      request
+        .get("User/")
+        .then((res) => {
+          that._users = res.data;
+        })
+        .catch((error) => {
+          that._error = error.data;
+          console.log(error);
+        });
+    });
+  };
 
   addUser(user: User) {
     request
       .post("User/", user)
       .then((res) => {
-        this.users = res.data;
+        this._users = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -39,7 +47,7 @@ class Store {
     request
       .put("User/" + user.id, user)
       .then((res) => {
-        this.users = res.data;
+        this._users = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -50,7 +58,7 @@ class Store {
     request
       .delete("User/" + id)
       .then((res) => {
-        this.users = res.data;
+        this._users = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -58,5 +66,7 @@ class Store {
   }
 }
 
-const store = new Store();
-export default store;
+const userStoreContext = createContext(new UserStore());
+export const useUserStore = () => {
+  return useContext(userStoreContext);
+};

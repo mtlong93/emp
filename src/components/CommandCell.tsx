@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@progress/kendo-react-buttons";
-import store from "../store";
+import { useUserStore } from "../store";
 import { User } from "../utils/user";
 
 interface IshowDlg {
@@ -9,22 +9,25 @@ interface IshowDlg {
   user: User;
 }
 
-const deleteUser = (id: number) => {
-  store.deleteUser(id);
-};
-
 export const CommandCell = (props: any) => {
-  const id = props.dataItem.id;
-  const showDlg = props.showDlg;
-  const setuser = props.setUser(props.dataItem);
+  // User store
+  const { users, deleteUser } = useUserStore();
+
+  // Delete user
+  const delUser = (id: number) => {
+    deleteUser(id);
+  };
+
   const mergeFunc = () => {
     props.showDlg();
     props.setUser(props.dataItem);
   };
+
+  // Main
   return (
     <div>
       <Button onClick={() => mergeFunc()}>Edit</Button>
-      <Button onClick={() => deleteUser(id)}>Delete</Button>
+      <Button onClick={() => delUser(props.dataItem.id)}>Delete</Button>
     </div>
   );
 };

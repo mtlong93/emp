@@ -16,7 +16,7 @@ import {
   DialogCloseEvent,
   Window,
 } from "@progress/kendo-react-dialogs";
-import store from "../store";
+import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import { values } from "mobx";
 
@@ -25,12 +25,26 @@ interface IshowDlg {
 }
 
 export const EditUser = (props: any) => {
-  // Add user
+  // User store
+  const { users, editUser } = useUserStore();
+
+  // set first name
+  const [firstName, setName] = useState("");
+  const onChange = (element: any) => {
+    setName(element.target.value);
+  };
+
+  // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(props.selectedUser.id);
-    store.editUser(props.selectedUser);
-  };
+    const selUser: User = {
+      id: props.selectedUser.id,
+      name: firstName,
+    };
+    console.log(selUser);
+    editUser(selUser);
+    props.showDlg();
+  };  
 
   // Main
   return (
@@ -49,26 +63,28 @@ export const EditUser = (props: any) => {
                   Please fill in the fields:
                 </legend>
                 <div className="mb-3">
-                  <Field name={"id"} component={Input} label={"Id"} />
+                  <Field name={"id"} value={props.selectedUser.id} component={Input} label={"Id"} />
                 </div>
                 <div className="mb-3">
                   <Field
                     name={"firstName"}
-                    value={props.selectedUser.name}
+                    //value={props.selectedUser.name}
+                    value={firstName}
+                    onChange={onChange}
                     component={Input}
                     label={"First name"}
-                  />
+                  />                 
                 </div>
               </fieldset>
               <div className="k-form-buttons">
-                <button
+                <Button
                   type={"submit"}
                   onClick={handleSubmit}
                   className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-base"
                   disabled={!formRenderProps.allowSubmit}
                 >
                   Submit
-                </button>
+                </Button>
               </div>
             </Dialog>
           </FormElement>

@@ -11,27 +11,18 @@ import "@progress/kendo-theme-default/dist/all.css";
 import { AddUser } from "./AddUser";
 import { EditUser } from "./EditUser";
 import { CommandCell } from "./CommandCell";
-import store from "../store";
+import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import { observer } from "mobx-react";
 
 export const UserList = observer(() => {
-  // Load data
-  const loadData = () => {
-    store.load();
-  };
+  const { users, load } = useUserStore();
 
   // Show add dialog
-  const [visibleAddDlg, setVisibleAddDlg] = React.useState<boolean>(false);
-  const showAddDlg = () => {
-    setVisibleAddDlg(!visibleAddDlg);
-  };
+  const [showAddDlg, setshowAddDlg] = React.useState<boolean>(false);
 
   // Show edit dialog
-  const [visibleEditDlg, setVisibleEditDlg] = React.useState<boolean>(false);
-  const showEditDlg = () => {
-    setVisibleEditDlg(!visibleEditDlg);
-  };
+  const [showEditDlg, setshowEditDlg] = React.useState<boolean>(false);
 
   const [selectedUser, setSelectedUser] = React.useState<User>();
   const setUser = (user: User) => {
@@ -40,7 +31,7 @@ export const UserList = observer(() => {
 
   // Edit & Delete Button
   const Command = (props: GridCellProps) => (
-    <CommandCell {...props} showDlg={showEditDlg} setUser={setUser} />
+    <CommandCell {...props} showDlg={() => setshowEditDlg(true)} setUser={setUser} />
   );
 
   // Delete User
@@ -49,18 +40,23 @@ export const UserList = observer(() => {
   return (
     <div>
       <h1>Employee Management System</h1>
-      <Grid data={store.users}>
+      <Grid data={users}>
         <GridToolbar>
-          <Button onClick={loadData}> Load User </Button>
-          <Button onClick={showAddDlg}> Add User </Button>
+          <Button onClick={load}> Load User </Button>
+          <Button onClick={() => setshowAddDlg(true)}> Add User </Button>
         </GridToolbar>
         <Column field="id" title="Id" width="50px" />
         <Column field="name" title="Name" />
         <Column cell={Command} width="240px" />
       </Grid>
 
-      {visibleAddDlg && <AddUser showDlg={showAddDlg} />}
-      {visibleEditDlg && <EditUser selectedUser={selectedUser} showDlg={showEditDlg} />}
+      {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} />}
+      {showEditDlg && (
+        <EditUser
+          selectedUser={selectedUser}
+          showDlg={() => setshowEditDlg(false)}
+        />
+      )}
     </div>
   );
 });
