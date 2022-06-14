@@ -9,7 +9,7 @@ interface IshowDlg {
   user: User;
 }
 
-export const CommandCell = (props: any) => {
+export const CommandButton = (props: any) => {
   // User store
   const { users, deleteUser } = useUserStore();
 

@@ -41,7 +41,6 @@ export const AddUser = (props: IshowDlg) => {
       id: 0,
       name: firstName,
     };
-    console.log(newUser);
     addUser(newUser);
     props.showDlg();
   };

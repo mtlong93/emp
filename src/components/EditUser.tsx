@@ -41,10 +41,9 @@ export const EditUser = (props: any) => {
       id: props.selectedUser.id,
       name: firstName,
     };
-    console.log(selUser);
     editUser(selUser);
     props.showDlg();
-  };  
+  };
 
   // Main
   return (
@@ -63,7 +62,12 @@ export const EditUser = (props: any) => {
                   Please fill in the fields:
                 </legend>
                 <div className="mb-3">
-                  <Field name={"id"} value={props.selectedUser.id} component={Input} label={"Id"} />
+                  <Field
+                    name={"id"}
+                    value={props.selectedUser.id}
+                    component={Input}
+                    label={"Id"}
+                  />
                 </div>
                 <div className="mb-3">
                   <Field
@@ -73,7 +77,7 @@ export const EditUser = (props: any) => {
                     onChange={onChange}
                     component={Input}
                     label={"First name"}
-                  />                 
+                  />
                 </div>
               </fieldset>
               <div className="k-form-buttons">

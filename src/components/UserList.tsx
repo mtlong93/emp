@@ -10,7 +10,7 @@ import { Button } from "@progress/kendo-react-buttons";
 import "@progress/kendo-theme-default/dist/all.css";
 import { AddUser } from "./AddUser";
 import { EditUser } from "./EditUser";
-import { CommandCell } from "./CommandCell";
+import { CommandButton } from "./CommandCell";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import { observer } from "mobx-react";
@@ -25,13 +25,14 @@ export const UserList = observer(() => {
   const [showEditDlg, setshowEditDlg] = React.useState<boolean>(false);
 
   const [selectedUser, setSelectedUser] = React.useState<User>();
-  const setUser = (user: User) => {
-    setSelectedUser(user);
-  };
 
   // Edit & Delete Button
-  const Command = (props: GridCellProps) => (
-    <CommandCell {...props} showDlg={() => setshowEditDlg(true)} setUser={setUser} />
+  const EditDelButton = (props: GridCellProps) => (
+    <CommandButton
+      {...props}
+      showDlg={() => setshowEditDlg(true)}
+      setUser={setSelectedUser}
+    />
   );
 
   // Delete User
@@ -47,7 +48,7 @@ export const UserList = observer(() => {
         </GridToolbar>
         <Column field="id" title="Id" width="50px" />
         <Column field="name" title="Name" />
-        <Column cell={Command} width="240px" />
+        <Column cell={EditDelButton} width="240px" />
       </Grid>
 
       {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} />}
