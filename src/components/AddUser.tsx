@@ -18,34 +18,47 @@ import {
 } from "@progress/kendo-react-dialogs";
 import { User } from "../utils/user";
 import { useUserStore } from "../store";
-import { FormComboBox, FormDatePicker, FormInput } from "../utils/formCoponents";
+import {
+  FormCheckbox,
+  FormComboBox,
+  FormDatePicker,
+  FormInput,
+} from "../utils/formCoponents";
 import { emailValidator } from "../utils/validation";
+import Moment from 'moment';
+import "@progress/kendo-theme-material";
 
-
-interface IshowDlg {
+interface IProperties {
   showDlg: () => void;
+  mode: string;
 }
 
 const genderData = ["Male", "Female"];
 
-export const AddUser = (props: IshowDlg) => {
+export const AddUser = (props: IProperties) => {
   // Store
   const { addUser } = useUserStore();
   // set firstName
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const [fullName, setName] = useState("");
-  const [female, setFemale] = useState(false);
-  const [birthday, setBirthday] = useState(new Date());
+  const [gender, setGender] = useState("");
+  const [birthday, setBirthday] = useState(Moment(new Date()).format("YYYY/MM/DD"));
   const [email, setEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const newUser: User = {
       id: 0,
+      userName: userName,
+      password: password,
       fullName: fullName,
-      female: female,
+      gender: gender,
       birthday: birthday,
       email: email,
+      isAdmin: isAdmin,
     };
     addUser(newUser);
     props.showDlg();
@@ -53,30 +66,48 @@ export const AddUser = (props: IshowDlg) => {
 
   // Main
   return (
-    <div>      
+    <div>
       <Form
         onSubmit={handleSubmit}
         render={(formRenderProps: FormRenderProps) => (
           <FormElement style={{ maxWidth: 650 }}>
-            <Dialog title={"Add User"} onClose={props.showDlg}>
+            <Dialog title={props.mode} onClose={props.showDlg}>
               <fieldset className={"k-form-fieldset"}>
                 <legend className={"k-form-legend"}>
                   Please fill in the fields:
                 </legend>
                 <div className="mb-3">
                   <Field
-                    name={"fullName"}
-                    value={fullName}
-                    onChange={(element: any) => setName(element.target.value)}
+                    name={"userName"}
+                    value={userName}
+                    onChange={(element: any) => setUserName(element.target.value)}
                     component={FormInput}
-                    label={"First name"}
+                    label={"User Name"}
                   />
                 </div>
                 <div className="mb-3">
                   <Field
-                    name={"female"}
-                    value={female}
-                    onChange={(element: any) => setFemale(element.target.value)}
+                    name={"password"}
+                    value={password}
+                    onChange={(element: any) => setPassword(element.target.value)}
+                    component={FormInput}
+                    label={"Password"}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Field
+                    name={"fullName"}
+                    value={fullName}
+                    onChange={(element: any) => setName(element.target.value)}
+                    component={FormInput}
+                    label={"Name"}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Field
+                    name={"gender"}
+                    value={gender}
+                    onChange={(element: any) => setGender(element.target.value)}
                     component={FormComboBox}
                     data={genderData}
                     label={"Gender"}
@@ -86,7 +117,9 @@ export const AddUser = (props: IshowDlg) => {
                   <Field
                     name={"birthday"}
                     value={birthday}
-                    onChange={(element: any) => setBirthday(element.target.value)}
+                    onChange={(element: any) =>
+                      setBirthday(element.target.value)
+                    }
                     component={FormDatePicker}
                     label={"Birthday"}
                   />
@@ -101,13 +134,27 @@ export const AddUser = (props: IshowDlg) => {
                     validator={emailValidator}
                   />
                 </div>
+                <div className={`mb-3 visibility: ${props.mode === "Add User" ? "visible" : "hidden"}`}>
+                  <Field
+                    name={"isAdmin"}
+                    label={"Admin Permission"}
+                    component={FormCheckbox}
+                    //validator={termsValidator}
+                  />
+                </div>
               </fieldset>
               <div className="k-form-buttons">
+              <Button
+                  type={"button"}
+                  onClick={props.showDlg}
+                >
+                  Cancel
+                </Button>
                 <Button
                   type={"submit"}
-                  onClick={handleSubmit}
-                  className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-base"
+                  onClick={handleSubmit}                  
                   disabled={!formRenderProps.allowSubmit}
+                  themeColor="primary"
                 >
                   Submit
                 </Button>

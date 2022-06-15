@@ -6,49 +6,67 @@ import {
   FieldRenderProps,
   FormRenderProps,
 } from "@progress/kendo-react-form";
-import { Error } from "@progress/kendo-react-labels";
 import { Input } from "@progress/kendo-react-inputs";
 import { Button } from "@progress/kendo-react-buttons";
-import {
-  Dialog,
-  DialogActionsBar,
-  DialogCloseEvent,
-  Window,
-} from "@progress/kendo-react-dialogs";
-import { DropDownList } from "@progress/kendo-react-dropdowns";
+import { Dialog } from "@progress/kendo-react-dialogs";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import { emailValidator } from "../utils/validation";
 import {
+  FormCheckbox,
   FormComboBox,
   FormDatePicker,
   FormInput,
 } from "../utils/formCoponents";
-interface IshowDlg {
+import { DatePicker } from "@progress/kendo-react-dateinputs";
+import "@progress/kendo-theme-material";
+import { KendoDate } from "@progress/kendo-react-dateinputs/dist/npm/dateinput/models";
+import Moment from 'moment';
+
+interface IProperties {
+  selUser: User;
   showDlg: () => void;
 }
 
 const genderData = ["Male", "Female"];
 
-export const EditUser = (props: any) => {
+export const EditUser = (props: IProperties) => {
+  console.log("name: ", props.selUser.fullName);
   // User store
   const { users, editUser } = useUserStore();
+  const [selectedUser, setSelectedUser] = useState<User>();
+  const selUserId = props.selUser.id;
+  useEffect(() => {
+    const userId = selUserId;
+    const selectedUser = users.find(user => user.id === userId);
+    setSelectedUser(selectedUser);
+  }, [selUserId, users])
+
+  //const onChange = (e: any) => {
+    //setSelectedUser({ ...selectedUser, [e.target.name]: e.target.value })
+  //}
 
   // set first name
-  const [fullName, setName] = useState("");
-  const [female, setFemale] = useState(false);
-  const [birthday, setBirthday] = useState(new Date());
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState(props.selUser.userName);
+  //const [password, setPassword] = useState(props.selUser.PName);
+  const [fullName, setName] = useState(props.selUser.fullName);
+  const [gender, setGender] = useState(props.selUser.gender);
+  const [birthday, setBirthday] = useState(Moment(new Date(props.selUser.birthday)).format("YYYY/MM/DD"));
+  const [email, setEmail] = useState(props.selUser.email);
+  const [isAdmin, setIsAdmin] = useState(props.selUser.isAdmin);
 
   // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const selUser: User = {
-      id: props.selectedUser.id,
+      id: props.selUser.id,
+      userName: userName,
+      password: props.selUser.password,
       fullName: fullName,
-      female: female,
+      gender: gender,
       birthday: birthday,
       email: email,
+      isAdmin: isAdmin,
     };
     editUser(selUser);
     props.showDlg();
@@ -60,11 +78,14 @@ export const EditUser = (props: any) => {
       <Form
         onSubmit={handleSubmit}
         initialValues={{
-          id: props.selectedUser.id,
-          fullName: props.selectedUser.fullName,
-          female: props.selectedUser.female,
-          birthday: props.selectedUser.birthday,
-          email: props.selectedUser.email,
+          id: props.selUser.id,
+          userName: props.selUser.userName,
+          password: props.selUser.password,
+          fullName: props.selUser.fullName,
+          gender: props.selUser.gender,
+          birthday: new Date(props.selUser.birthday),
+          email: props.selUser.email,
+          isAdmin: props.selUser.isAdmin,
         }}
         render={(formRenderProps: FormRenderProps) => (
           <FormElement style={{ maxWidth: 650 }}>
@@ -73,14 +94,35 @@ export const EditUser = (props: any) => {
                 <legend className={"k-form-legend"}>
                   Please fill in the fields:
                 </legend>
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <Field
                     name={"id"}
                     value={props.selectedUser.id}
                     component={Input}
                     label={"Id"}
+                    visible={false}
+                  />
+                </div> */}
+                <div className="mb-3">
+                  <Field
+                    name={"userName"}
+                    value={userName}
+                    onChange={(element: any) => setUserName(element.target.value)}
+                    component={FormInput}
+                    label={"User Name"}
                   />
                 </div>
+                {/* <div className="mb-3">
+                  <Field
+                    name={"password"}
+                    value={password}
+                    onChange={(element: any) =>
+                      setPassword(element.target.value)
+                    }
+                    component={FormInput}
+                    label={"Password"}
+                  />
+                </div> */}
                 <div className="mb-3">
                   <Field
                     name={"fullName"}
@@ -92,9 +134,9 @@ export const EditUser = (props: any) => {
                 </div>
                 <div className="mb-3">
                   <Field
-                    name={"female"}
-                    value={female}
-                    onChange={(element: any) => setFemale(element.target.value)}
+                    name={"gender"}
+                    value={gender}
+                    onChange={(element: any) => setGender(element.target.value)}
                     component={FormComboBox}
                     data={genderData}
                     label={"Gender"}
@@ -105,7 +147,7 @@ export const EditUser = (props: any) => {
                     name={"birthday"}
                     value={birthday}
                     onChange={(element: any) =>
-                      setBirthday(element.target.value)
+                      setBirthday(Moment(new Date(element.target.value)).format("YYYY/MM/DD"))
                     }
                     component={FormDatePicker}
                     label={"Birthday"}
@@ -121,13 +163,26 @@ export const EditUser = (props: any) => {
                     validator={emailValidator}
                   />
                 </div>
+                <div className="mb-3">
+                  <Field
+                    name={"isAdmin"}
+                    value={isAdmin}
+                    onChange={(element: any) => setIsAdmin(element.target.value)}
+                    label={"Admin Permission"}
+                    component={FormCheckbox}
+                    //validator={termsValidator}
+                  />
+                </div>
               </fieldset>
               <div className="k-form-buttons">
+                <Button type={"button"} onClick={props.showDlg}>
+                  Cancel
+                </Button>
                 <Button
                   type={"submit"}
                   onClick={handleSubmit}
-                  className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-base"
                   disabled={!formRenderProps.allowSubmit}
+                  themeColor="primary"
                 >
                   Submit
                 </Button>

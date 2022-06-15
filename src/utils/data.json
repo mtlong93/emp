@@ -1,0 +1,162 @@
+[
+  {
+    "fullName": "Mai Thanh Long",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "long.mai@ptnglobal.com",
+    "userName": "long_mai",
+    "password": "LQhF4F9gTtP5ndR",
+    "isAdmin": true,
+    "id": "1"
+  },
+  {
+    "fullName": "Trần Trí Tân",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "tan.tran@ptnglobal.com",
+    "userName": "tan_tran",
+    "password": "pU3wb8nlKemNOsX",
+    "isAdmin": false,
+    "id": "2"
+  },
+  {
+    "fullName": "Nguyễn Thanh Phong",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "phong.nguyen@ptnglobal.com",
+    "userName": "phong_nguyen",
+    "password": "cxUW3gI7gsp2vG3",
+    "isAdmin": false,
+    "id": "3"
+  },
+  {
+    "fullName": "Nguyễn Thị Thanh Huyền",
+    "gender": "Female",
+    "birthday": "1993/10/31",
+    "email": "huyen.nguyen@ptnglobal.com",
+    "userName": "huyen_nguyen",
+    "password": "EmK_jxuIg2uLIJj",
+    "isAdmin": false,
+    "id": "4"
+  },
+  {
+    "fullName": "Võ Sĩ Liêm",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "liem.vo@ptnglobal.com",
+    "userName": "liem_vo",
+    "password": "ixMV6qr0HJo5pJo",
+    "isAdmin": false,
+    "id": "5"
+  },
+  {
+    "fullName": "Ngô Hửu Trọng",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "trong.ngo@ptnglobal.com",
+    "userName": "trong_ngo",
+    "password": "_rZ3osumLhT7F8q",
+    "isAdmin": false,
+    "id": "6"
+  },
+  {
+    "fullName": "Trần Vi Khan",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "khan.tran@ptnglobal.com",
+    "userName": "khan_tran",
+    "password": "xI3j80fcQXIV0Gf",
+    "isAdmin": false,
+    "id": "7"
+  },
+  {
+    "fullName": "Nguyễn Trung Tín",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "tin.nguyen@ptnglobal.com",
+    "userName": "tin_nguyen",
+    "password": "3MKuTSHdvGGJxA8",
+    "isAdmin": false,
+    "id": "8"
+  },
+  {
+    "fullName": "Trần Quốc An",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "an.tran@ptnglobal.com",
+    "userName": "an_tran",
+    "password": "DqeItsdxZVPpzcT",
+    "isAdmin": false,
+    "id": "9"
+  },
+  {
+    "fullName": "Ngô Hoàng Thọ",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "tho.ngo@ptnglobal.com",
+    "userName": "tho_ngo",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "10"
+  },
+  {
+    "fullName": "Nguyễn Ngọc Vân Anh",
+    "gender": "Female",
+    "birthday": "1993/10/31",
+    "email": "anh.nguyen@ptnglobal.com",
+    "userName": "anh_nguyen",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "11"
+  },
+  {
+    "fullName": "Lê Hoàng Tiến",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "tien.le@ptnglobal.com",
+    "userName": "tien_le",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "12"
+  },
+  {
+    "fullName": "Triệu Tiểu Vân",
+    "gender": "Female",
+    "birthday": "1993/10/31",
+    "email": "van.trieu@ptnglobal.com",
+    "userName": "van_trieu",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "13"
+  },
+  {
+    "fullName": "Nguyễn Tấn Đạt",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "dat.nguyen@ptnglobal.com",
+    "userName": "dat_nguyen",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "14"
+  },
+  {
+    "fullName": "Nguyễn Thị Thùy Dương",
+    "gender": "Female",
+    "birthday": "1993/10/31",
+    "email": "duong.nguyen@ptnglobal.com",
+    "userName": "duong_nguyen",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "15"
+  },
+  {
+    "fullName": "Lưu Nguyễn Trung Hậu",
+    "gender": "Male",
+    "birthday": "1993/10/31",
+    "email": "hau.luu@ptnglobal.com",
+    "userName": "hau_luu",
+    "password": "syACpVPAiPTvGeU",
+    "isAdmin": false,
+    "id": "16"
+  }
+]

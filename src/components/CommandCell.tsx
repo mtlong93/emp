@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@progress/kendo-react-buttons";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
+import "@progress/kendo-theme-material";
 
 interface IshowDlg {
   showDlg: () => void;
@@ -18,7 +19,7 @@ export const CommandButton = (props: any) => {
     deleteUser(id);
   };
 
-  const mergeFunc = () => {
+  const mergeFunc = () => {    
     props.showDlg();
     props.setUser(props.dataItem);
   };
@@ -26,8 +27,21 @@ export const CommandButton = (props: any) => {
   // Main
   return (
     <div>
-      <Button onClick={() => mergeFunc()}>Edit</Button>
-      <Button onClick={() => delUser(props.dataItem.id)}>Delete</Button>
+      <Button
+        className="m-1"
+        onClick={() => mergeFunc()}
+        themeColor="warning"
+        fillMode="outline"
+      >
+        Edit
+      </Button>
+      <Button
+        onClick={() => delUser(props.dataItem.id)}
+        themeColor="error"
+        fillMode="outline"
+      >
+        Delete
+      </Button>
     </div>
   );
 };

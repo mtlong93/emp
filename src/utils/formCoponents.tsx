@@ -3,7 +3,7 @@ import React from "react";
 import { Label, Error, Hint } from "@progress/kendo-react-labels";
 
 import { ComboBox } from "@progress/kendo-react-dropdowns";
-import { Input } from "@progress/kendo-react-inputs";
+import { Checkbox, Input } from "@progress/kendo-react-inputs";
 import { DatePicker } from "@progress/kendo-react-dateinputs";
 
 // -------------------Form Input--------------------
@@ -153,6 +153,45 @@ export const FormDatePicker = (fieldRenderProps: FieldRenderProps) => {
           <Error id={errorId}>{validationMessage}</Error>
         )}
       </div>
+    </FieldWrapper>
+  );
+};
+
+// -------------------Form Checkox--------------------
+export const FormCheckbox = (fieldRenderProps: FieldRenderProps) => {
+  const {
+    validationMessage,
+    touched,
+    id,
+    valid,
+    disabled,
+    hint,
+    optional,
+    label,
+    visited,
+    modified,
+    ...others
+  } = fieldRenderProps;
+
+  const showValidationMessage: string | false | null =
+    touched && validationMessage;
+  const showHint: boolean = !showValidationMessage && hint;
+  const hintId: string = showHint ? `${id}_hint` : "";
+  const errorId: string = showValidationMessage ? `${id}_error` : "";
+
+  return (
+    <FieldWrapper>
+      <Checkbox
+        ariaDescribedBy={`${hintId} ${errorId}`}
+        label={label}
+        labelOptional={optional}
+        valid={valid}
+        id={id}
+        disabled={disabled}
+        {...others}
+      />
+      {showHint && <Hint id={hintId}>{hint}</Hint>}
+      {showValidationMessage && <Error id={errorId}>{validationMessage}</Error>}
     </FieldWrapper>
   );
 };
