@@ -1,31 +1,13 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Field,
-  FormElement,
-  FieldRenderProps,
-  FormRenderProps,
-} from "@progress/kendo-react-form";
-import { Error } from "@progress/kendo-react-labels";
-import { Input } from "@progress/kendo-react-inputs";
+import { useState } from "react";
+import { Form, Field, FormElement, FormRenderProps } from "@progress/kendo-react-form";
 import { Button } from "@progress/kendo-react-buttons";
-import { Link } from "react-router-dom";
-import {
-  Dialog,
-  DialogActionsBar,
-  DialogCloseEvent,
-  Window,
-} from "@progress/kendo-react-dialogs";
+import { Dialog } from "@progress/kendo-react-dialogs";
 import { User } from "../utils/user";
 import { useUserStore } from "../store";
-import {
-  FormCheckbox,
-  FormComboBox,
-  FormDatePicker,
-  FormInput,
-} from "../utils/formCoponents";
+import { FormCheckbox, FormComboBox, FormDatePicker, FormInput } from "../utils/formCoponents";
 import { emailValidator } from "../utils/validation";
-import Moment from 'moment';
+import Moment from "moment";
+import { genderData } from "../utils/dataDefault";
 import "@progress/kendo-theme-material";
 
 interface IProperties {
@@ -33,12 +15,11 @@ interface IProperties {
   mode: string;
 }
 
-const genderData = ["Male", "Female"];
-
 export const AddUser = (props: IProperties) => {
-  // Store
-  const { addUser } = useUserStore();
-  // set firstName
+  // User Store
+  const { load, addUser } = useUserStore();
+
+  // set data
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setName] = useState("");
@@ -61,6 +42,7 @@ export const AddUser = (props: IProperties) => {
       isAdmin: isAdmin,
     };
     addUser(newUser);
+    load();
     props.showDlg();
   };
 
@@ -72,10 +54,8 @@ export const AddUser = (props: IProperties) => {
         render={(formRenderProps: FormRenderProps) => (
           <FormElement style={{ maxWidth: 650 }}>
             <Dialog title={props.mode} onClose={props.showDlg}>
-              <fieldset className={"k-form-fieldset"}>
-                <legend className={"k-form-legend"}>
-                  Please fill in the fields:
-                </legend>
+              <fieldset>
+                <legend>Please fill in the fields:</legend>
                 <div className="mb-3">
                   <Field
                     name={"userName"}
@@ -118,7 +98,7 @@ export const AddUser = (props: IProperties) => {
                     name={"birthday"}
                     value={birthday}
                     onChange={(element: any) =>
-                      setBirthday(element.target.value)
+                      setBirthday(Moment(new Date(element.target.value)).format("YYYY/MM/DD"))
                     }
                     component={FormDatePicker}
                     label={"Birthday"}
@@ -138,23 +118,21 @@ export const AddUser = (props: IProperties) => {
                   <Field
                     name={"isAdmin"}
                     label={"Admin Permission"}
+                    onChange={(element: any) => setIsAdmin(element.target.value)}
                     component={FormCheckbox}
                     //validator={termsValidator}
                   />
                 </div>
               </fieldset>
-              <div className="k-form-buttons">
-              <Button
-                  type={"button"}
-                  onClick={props.showDlg}
-                >
+              <div>
+                <Button className="btnCancel" onClick={props.showDlg}>
                   Cancel
                 </Button>
                 <Button
+                  className="btnSubmit"
                   type={"submit"}
-                  onClick={handleSubmit}                  
+                  onClick={handleSubmit}
                   disabled={!formRenderProps.allowSubmit}
-                  themeColor="primary"
                 >
                   Submit
                 </Button>

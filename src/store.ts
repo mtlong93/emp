@@ -16,6 +16,7 @@ class UserStore {
     return toJS(this._users);
   }
 
+  // Load action
   load = async () => {
     runInAction(() => {
       let that = this;
@@ -31,6 +32,7 @@ class UserStore {
     });
   };
 
+  // Add action
   addUser(user: User) {
     request
       .post("User/", user)
@@ -42,6 +44,7 @@ class UserStore {
       });
   }
 
+  // Edit action
   editUser(user: User) {
     console.log(user);
     request
@@ -54,6 +57,7 @@ class UserStore {
       });
   }
 
+  // Delete action
   deleteUser(id: number) {
     request
       .delete("User/" + id)
@@ -66,6 +70,7 @@ class UserStore {
   }
 }
 
+// useContext
 const userStoreContext = createContext(new UserStore());
 export const useUserStore = () => {
   return useContext(userStoreContext);

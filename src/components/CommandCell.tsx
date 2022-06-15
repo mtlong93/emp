@@ -1,27 +1,21 @@
-import React from "react";
 import { Button } from "@progress/kendo-react-buttons";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import "@progress/kendo-theme-material";
 
-interface IshowDlg {
+interface IProperties {
   showDlg: () => void;
-  setUser: () => void;
+  setUser: (user: User) => void;
   user: User;
 }
 
-export const CommandButton = (props: any) => {
+export const CommandButton = (props: IProperties) => {
   // User store
-  const { users, deleteUser } = useUserStore();
+  const { deleteUser } = useUserStore();
 
   // Delete user
-  const delUser = (id: number) => {
+  const delUser = (id: number) => {    
     deleteUser(id);
-  };
-
-  const mergeFunc = () => {    
-    props.showDlg();
-    props.setUser(props.dataItem);
   };
 
   // Main
@@ -29,17 +23,16 @@ export const CommandButton = (props: any) => {
     <div>
       <Button
         className="m-1"
-        onClick={() => mergeFunc()}
+        onClick={() => {
+          props.showDlg();
+          props.setUser(props.user);
+        }}
         themeColor="warning"
         fillMode="outline"
       >
         Edit
       </Button>
-      <Button
-        onClick={() => delUser(props.dataItem.id)}
-        themeColor="error"
-        fillMode="outline"
-      >
+      <Button onClick={() => delUser(props.user.id)} themeColor="error" fillMode="outline">
         Delete
       </Button>
     </div>

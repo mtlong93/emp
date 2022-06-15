@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "@progress/kendo-react-buttons";
-import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { AddUser } from "./AddUser";
 
@@ -31,10 +29,7 @@ export const Wellcome = () => {
           </svg>
 
           <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
-            <nav
-              className="relative flex items-center justify-between sm:h-10 lg:justify-start"
-              aria-label="Global"
-            >
+            <nav className="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
               <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                 <div className="flex items-center justify-between w-full md:w-auto">
                   <Link to={"/admin"}>
@@ -50,11 +45,7 @@ export const Wellcome = () => {
               </div>
               <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="font-medium text-gray-500 hover:text-gray-900"
-                  >
+                  <a key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
                     {item.name}
                   </a>
                 ))}
@@ -68,14 +59,11 @@ export const Wellcome = () => {
                 <span className="block text-indigo-600 mt-3">PTN Staffing</span>
               </h1>
               <p className="mt-6 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-6 md:text-xl lg:mx-0">
-                10,000+ companies—from startups to Fortune 500s—use PTN's
-                self-serve platform to build and manage business processes
-                across departments. <br />
+                10,000+ companies—from startups to Fortune 500s—use PTN's self-serve platform to build and manage
+                business processes across departments. <br />
                 Easy to use, easy to customize, and easy to scale.
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-
-
                 <div className="rounded-md shadow">
                   <Link
                     to={"/login"}
@@ -104,9 +92,7 @@ export const Wellcome = () => {
           alt=""
         />
       </div>
-      {showAddDlg && (
-        <AddUser showDlg={() => setshowAddDlg(false)} mode="Register" />
-      )}
+      {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} mode="Register" />}
     </div>
   );
 };

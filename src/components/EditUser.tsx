@@ -1,52 +1,25 @@
-import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Field,
-  FormElement,
-  FieldRenderProps,
-  FormRenderProps,
-} from "@progress/kendo-react-form";
-import { Input } from "@progress/kendo-react-inputs";
+import { useState } from "react";
+import { Form, Field, FormElement, FormRenderProps } from "@progress/kendo-react-form";
 import { Button } from "@progress/kendo-react-buttons";
 import { Dialog } from "@progress/kendo-react-dialogs";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import { emailValidator } from "../utils/validation";
-import {
-  FormCheckbox,
-  FormComboBox,
-  FormDatePicker,
-  FormInput,
-} from "../utils/formCoponents";
-import { DatePicker } from "@progress/kendo-react-dateinputs";
+import { FormCheckbox, FormComboBox, FormDatePicker, FormInput } from "../utils/formCoponents";
+import Moment from "moment";
+import { genderData } from "../utils/dataDefault";
 import "@progress/kendo-theme-material";
-import { KendoDate } from "@progress/kendo-react-dateinputs/dist/npm/dateinput/models";
-import Moment from 'moment';
 
 interface IProperties {
   selUser: User;
   showDlg: () => void;
 }
 
-const genderData = ["Male", "Female"];
-
 export const EditUser = (props: IProperties) => {
-  console.log("name: ", props.selUser.fullName);
   // User store
-  const { users, editUser } = useUserStore();
-  const [selectedUser, setSelectedUser] = useState<User>();
-  const selUserId = props.selUser.id;
-  useEffect(() => {
-    const userId = selUserId;
-    const selectedUser = users.find(user => user.id === userId);
-    setSelectedUser(selectedUser);
-  }, [selUserId, users])
+  const { load, editUser } = useUserStore();
 
-  //const onChange = (e: any) => {
-    //setSelectedUser({ ...selectedUser, [e.target.name]: e.target.value })
-  //}
-
-  // set first name
+  // set data
   const [userName, setUserName] = useState(props.selUser.userName);
   //const [password, setPassword] = useState(props.selUser.PName);
   const [fullName, setName] = useState(props.selUser.fullName);
@@ -69,6 +42,7 @@ export const EditUser = (props: IProperties) => {
       isAdmin: isAdmin,
     };
     editUser(selUser);
+    load();
     props.showDlg();
   };
 
@@ -89,20 +63,9 @@ export const EditUser = (props: IProperties) => {
         }}
         render={(formRenderProps: FormRenderProps) => (
           <FormElement style={{ maxWidth: 650 }}>
-            <Dialog title={"Edit User"} onClose={props.showDlg}>
-              <fieldset className={"k-form-fieldset"}>
-                <legend className={"k-form-legend"}>
-                  Please fill in the fields:
-                </legend>
-                {/* <div className="mb-3">
-                  <Field
-                    name={"id"}
-                    value={props.selectedUser.id}
-                    component={Input}
-                    label={"Id"}
-                    visible={false}
-                  />
-                </div> */}
+            <Dialog title={`Edit ${props.selUser.userName}`} onClose={props.showDlg}>
+              <fieldset>
+                <legend>Please fill in the fields:</legend>
                 <div className="mb-3">
                   <Field
                     name={"userName"}
@@ -112,17 +75,6 @@ export const EditUser = (props: IProperties) => {
                     label={"User Name"}
                   />
                 </div>
-                {/* <div className="mb-3">
-                  <Field
-                    name={"password"}
-                    value={password}
-                    onChange={(element: any) =>
-                      setPassword(element.target.value)
-                    }
-                    component={FormInput}
-                    label={"Password"}
-                  />
-                </div> */}
                 <div className="mb-3">
                   <Field
                     name={"fullName"}
@@ -175,10 +127,11 @@ export const EditUser = (props: IProperties) => {
                 </div>
               </fieldset>
               <div className="k-form-buttons">
-                <Button type={"button"} onClick={props.showDlg}>
+                <Button className="btnCancel" type={"button"} onClick={props.showDlg}>
                   Cancel
                 </Button>
                 <Button
+                  className="btnSubmit"
                   type={"submit"}
                   onClick={handleSubmit}
                   disabled={!formRenderProps.allowSubmit}

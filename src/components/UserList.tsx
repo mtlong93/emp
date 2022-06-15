@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   GridColumn as Column,
-  GridToolbar,
   GridCellProps,
   GridSortChangeEvent,
 } from "@progress/kendo-react-grid";
@@ -13,29 +12,27 @@ import { CommandButton } from "./CommandCell";
 import { useUserStore } from "../store";
 import { User } from "../utils/user";
 import { observer } from "mobx-react";
-import "@progress/kendo-theme-material";
 import { orderBy, SortDescriptor } from "@progress/kendo-data-query";
-import { Label } from "@progress/kendo-react-labels";
 import { Link } from "react-router-dom";
+import "@progress/kendo-theme-material";
 
 export const UserList = observer(() => {
   const { users, load } = useUserStore();
 
   // Show add dialog
-  const [showAddDlg, setshowAddDlg] = React.useState<boolean>(false);
+  const [showAddDlg, setshowAddDlg] = useState(false);
 
   // Show edit dialog
-  const [showEditDlg, setshowEditDlg] = React.useState<boolean>(false);
+  const [showEditDlg, setshowEditDlg] = useState(false);
 
-  const [selectedUser, setSelectedUser] = React.useState<User>();
+  const [selectedUser, setSelectedUser] = useState<User>();
 
+  interface EditCommandCellProps extends GridCellProps {
+    enterEdit: (user: User) => void;
+  }
   // Edit & Delete Button
-  const EditDelButton = (props: GridCellProps) => (
-    <CommandButton
-      {...props}
-      showDlg={() => setshowEditDlg(true)}
-      setUser={setSelectedUser}
-    />
+  const EditDelButton = (props: EditCommandCellProps) => (
+    <CommandButton user={props.dataItem} showDlg={() => setshowEditDlg(true)} setUser={setSelectedUser}/>
   );
 
   const initialSort: Array<SortDescriptor> = [];
@@ -46,17 +43,30 @@ export const UserList = observer(() => {
     <div>
       <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl m-8">
         <span className="block xl:inline mr-20">
-          <Link to={"/"}><img
-            alt="PTN Gblobal"
-            className="h-10 w-auto sm:h-20 block xl:inline"
-            src="http://intranet.ptnglobalcorp.com/web/image/res.company/1/logo?unique=8ea1c88"
-          /></Link>          
+          <Link to={"/"}>
+            <img
+              alt="PTN Gblobal"
+              className="h-10 w-auto sm:h-20 block xl:inline"
+              src="http://intranet.ptnglobalcorp.com/web/image/res.company/1/logo?unique=8ea1c88"
+            />
+          </Link>
         </span>
         <span className="block xl:inline">Employee </span>
-        <span className="block text-indigo-600 xl:inline">
-          Management System
-        </span>
+        <span className="block text-indigo-600 xl:inline">Management System</span>
       </h1>
+      <div className="mt-5 mb-10 ml-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start ">
+        <div className="rounded-md shadow">
+          <Button onClick={load} themeColor="primary">
+            Load User
+          </Button>
+        </div>
+        <div className="mt-3 sm:mt-0 sm:ml-3">
+          <Button onClick={() => setshowAddDlg(true)} themeColor="primary">
+            Add User
+          </Button>
+        </div>
+      </div>
+
       <Grid
         data={orderBy(users, sort)}
         sortable={true}
@@ -65,15 +75,6 @@ export const UserList = observer(() => {
           setSort(e.sort);
         }}
       >
-        <GridToolbar>
-          <Button onClick={load} themeColor="primary">
-            Load User
-          </Button>
-          <Button onClick={() => setshowAddDlg(true)} themeColor="primary">
-            Add User
-          </Button>
-        </GridToolbar>
-
         <Column field="id" title="Id" width="80px" />
         <Column field="userName" title="User Name" width="180px" />
         <Column field="fullName" title="Name" width="250px" />
@@ -84,13 +85,8 @@ export const UserList = observer(() => {
         <Column cell={EditDelButton} title="Command" width="200px" />
       </Grid>
 
-      {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} mode="Add User"/>}
-      {showEditDlg && (
-        <EditUser
-          selUser={selectedUser!}
-          showDlg={() => setshowEditDlg(false)}
-        />
-      )}
+      {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} mode="Add User" />}
+      {showEditDlg && <EditUser selUser={selectedUser!} showDlg={() => setshowEditDlg(false)} />}
     </div>
   );
 });
