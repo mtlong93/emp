@@ -1,21 +1,22 @@
 import { Button } from "@progress/kendo-react-buttons";
-import { useUserStore } from "../store";
-import { User } from "../utils/user";
+import { useEmpStore } from "../utils/EmpStore";
+import { Emp } from "../utils/empInterface";
 import "@progress/kendo-theme-material";
 
 interface IProperties {
   showDlg: () => void;
-  setUser: (user: User) => void;
-  user: User;
+  setEmp: (emp: Emp) => void;
+  emp: Emp;
 }
 
 export const CommandButton = (props: IProperties) => {
-  // User store
-  const { deleteUser } = useUserStore();
+  // Emp store
+  const { deleteEmp, load } = useEmpStore();
 
-  // Delete user
-  const delUser = (id: number) => {    
-    deleteUser(id);
+  // Delete employee
+  const delEmp = (id: number) => {
+    deleteEmp(id);
+    load();
   };
 
   // Main
@@ -25,14 +26,18 @@ export const CommandButton = (props: IProperties) => {
         className="m-1"
         onClick={() => {
           props.showDlg();
-          props.setUser(props.user);
+          props.setEmp(props.emp);
         }}
         themeColor="warning"
         fillMode="outline"
       >
         Edit
       </Button>
-      <Button onClick={() => delUser(props.user.id)} themeColor="error" fillMode="outline">
+      <Button
+        onClick={() => window.confirm("Confirm deleting: " + props.emp.userName) && delEmp(props.emp.id)}
+        themeColor="error"
+        fillMode="outline"
+      >
         Delete
       </Button>
     </div>

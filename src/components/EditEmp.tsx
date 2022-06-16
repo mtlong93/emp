@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Form, Field, FormElement, FormRenderProps } from "@progress/kendo-react-form";
 import { Button } from "@progress/kendo-react-buttons";
 import { Dialog } from "@progress/kendo-react-dialogs";
-import { useUserStore } from "../store";
-import { User } from "../utils/user";
+import { useEmpStore } from "../utils/EmpStore";
+import { Emp } from "../utils/empInterface";
 import { emailValidator } from "../utils/validation";
 import { FormCheckbox, FormComboBox, FormDatePicker, FormInput } from "../utils/formCoponents";
 import Moment from "moment";
@@ -11,37 +11,36 @@ import { genderData } from "../utils/dataDefault";
 import "@progress/kendo-theme-material";
 
 interface IProperties {
-  selUser: User;
+  selEmp: Emp;
   showDlg: () => void;
 }
 
-export const EditUser = (props: IProperties) => {
-  // User store
-  const { load, editUser } = useUserStore();
+export const EditEmp = (props: IProperties) => {
+  // Emp store
+  const { load, editEmp } = useEmpStore();
 
   // set data
-  const [userName, setUserName] = useState(props.selUser.userName);
-  //const [password, setPassword] = useState(props.selUser.PName);
-  const [fullName, setName] = useState(props.selUser.fullName);
-  const [gender, setGender] = useState(props.selUser.gender);
-  const [birthday, setBirthday] = useState(Moment(new Date(props.selUser.birthday)).format("YYYY/MM/DD"));
-  const [email, setEmail] = useState(props.selUser.email);
-  const [isAdmin, setIsAdmin] = useState(props.selUser.isAdmin);
+  const [userName, setUserName] = useState(props.selEmp.userName);
+  const [fullName, setName] = useState(props.selEmp.fullName);
+  const [gender, setGender] = useState(props.selEmp.gender);
+  const [birthday, setBirthday] = useState(Moment(new Date(props.selEmp.birthday)).format("YYYY/MM/DD"));
+  const [email, setEmail] = useState(props.selEmp.email);
+  const [isAdmin, setIsAdmin] = useState(props.selEmp.isAdmin);
 
   // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const selUser: User = {
-      id: props.selUser.id,
+    const selEmp: Emp = {
+      id: props.selEmp.id,
       userName: userName,
-      password: props.selUser.password,
+      password: props.selEmp.password,
       fullName: fullName,
       gender: gender,
       birthday: birthday,
       email: email,
       isAdmin: isAdmin,
     };
-    editUser(selUser);
+    editEmp(selEmp);
     load();
     props.showDlg();
   };
@@ -52,18 +51,18 @@ export const EditUser = (props: IProperties) => {
       <Form
         onSubmit={handleSubmit}
         initialValues={{
-          id: props.selUser.id,
-          userName: props.selUser.userName,
-          password: props.selUser.password,
-          fullName: props.selUser.fullName,
-          gender: props.selUser.gender,
-          birthday: new Date(props.selUser.birthday),
-          email: props.selUser.email,
-          isAdmin: props.selUser.isAdmin,
+          id: props.selEmp.id,
+          userName: props.selEmp.userName,
+          password: props.selEmp.password,
+          fullName: props.selEmp.fullName,
+          gender: props.selEmp.gender,
+          birthday: new Date(props.selEmp.birthday),
+          email: props.selEmp.email,
+          isAdmin: props.selEmp.isAdmin,
         }}
         render={(formRenderProps: FormRenderProps) => (
           <FormElement style={{ maxWidth: 650 }}>
-            <Dialog title={`Edit ${props.selUser.userName}`} onClose={props.showDlg}>
+            <Dialog title={`Edit ${props.selEmp.userName}`} onClose={props.showDlg}>
               <fieldset>
                 <legend>Please fill in the fields:</legend>
                 <div className="mb-3">
@@ -122,16 +121,15 @@ export const EditUser = (props: IProperties) => {
                     onChange={(element: any) => setIsAdmin(element.target.value)}
                     label={"Admin Permission"}
                     component={FormCheckbox}
-                    //validator={termsValidator}
                   />
                 </div>
               </fieldset>
               <div className="k-form-buttons">
-                <Button className="btnCancel" type={"button"} onClick={props.showDlg}>
+                <Button type={"button"} onClick={props.showDlg}>
                   Cancel
                 </Button>
                 <Button
-                  className="btnSubmit"
+                  className="ml-3"
                   type={"submit"}
                   onClick={handleSubmit}
                   disabled={!formRenderProps.allowSubmit}

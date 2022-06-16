@@ -5,7 +5,7 @@
     "birthday": "1993/10/31",
     "email": "long.mai@ptnglobal.com",
     "userName": "long_mai",
-    "password": "LQhF4F9gTtP5ndR",
+    "password": "mtlong",
     "isAdmin": true,
     "id": "1"
   },
@@ -45,8 +45,8 @@
     "birthday": "1993/10/31",
     "email": "liem.vo@ptnglobal.com",
     "userName": "liem_vo",
-    "password": "ixMV6qr0HJo5pJo",
-    "isAdmin": false,
+    "password": "vsliem",
+    "isAdmin": true,
     "id": "5"
   },
   {
@@ -125,7 +125,7 @@
     "birthday": "1993/10/31",
     "email": "van.trieu@ptnglobal.com",
     "userName": "van_trieu",
-    "password": "syACpVPAiPTvGeU",
+    "password": "ttvan",
     "isAdmin": false,
     "id": "13"
   },

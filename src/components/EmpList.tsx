@@ -1,40 +1,32 @@
-import React, { useState } from "react";
-import {
-  Grid,
-  GridColumn as Column,
-  GridCellProps,
-  GridSortChangeEvent,
-} from "@progress/kendo-react-grid";
+import React, { useEffect, useState } from "react";
+import { Grid, GridColumn as Column, GridCellProps, GridSortChangeEvent, GridToolbar } from "@progress/kendo-react-grid";
 import { Button } from "@progress/kendo-react-buttons";
-import { AddUser } from "./AddUser";
-import { EditUser } from "./EditUser";
+import { AddEmp } from "./AddEmp";
+import { EditEmp } from "./EditEmp";
 import { CommandButton } from "./CommandCell";
-import { useUserStore } from "../store";
-import { User } from "../utils/user";
+import { useEmpStore } from "../utils/EmpStore";
+import { Emp } from "../utils/empInterface";
 import { observer } from "mobx-react";
 import { orderBy, SortDescriptor } from "@progress/kendo-data-query";
 import { Link } from "react-router-dom";
 import "@progress/kendo-theme-material";
 
-export const UserList = observer(() => {
-  const { users, load } = useUserStore();
+export const EmpList = observer(() => {
+  // Employee Store
+  const { emps, load } = useEmpStore();
 
-  // Show add dialog
+  // Show dialog
   const [showAddDlg, setshowAddDlg] = useState(false);
-
-  // Show edit dialog
   const [showEditDlg, setshowEditDlg] = useState(false);
 
-  const [selectedUser, setSelectedUser] = useState<User>();
+  // Edit & Delete    
+  const [selectedEmp, setSelectedEmp] = useState<Emp>();
 
-  interface EditCommandCellProps extends GridCellProps {
-    enterEdit: (user: User) => void;
-  }
-  // Edit & Delete Button
-  const EditDelButton = (props: EditCommandCellProps) => (
-    <CommandButton user={props.dataItem} showDlg={() => setshowEditDlg(true)} setUser={setSelectedUser}/>
+  const EditDelButton = (props: GridCellProps) => (
+    <CommandButton emp={props.dataItem} showDlg={() => setshowEditDlg(true)} setEmp={setSelectedEmp} />
   );
 
+  // Sort grid
   const initialSort: Array<SortDescriptor> = [];
   const [sort, setSort] = React.useState(initialSort);
 
@@ -54,27 +46,24 @@ export const UserList = observer(() => {
         <span className="block xl:inline">Employee </span>
         <span className="block text-indigo-600 xl:inline">Management System</span>
       </h1>
-      <div className="mt-5 mb-10 ml-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start ">
-        <div className="rounded-md shadow">
-          <Button onClick={load} themeColor="primary">
-            Load User
-          </Button>
-        </div>
-        <div className="mt-3 sm:mt-0 sm:ml-3">
-          <Button onClick={() => setshowAddDlg(true)} themeColor="primary">
-            Add User
-          </Button>
-        </div>
-      </div>
 
       <Grid
-        data={orderBy(users, sort)}
+        data={orderBy(emps, sort)}
         sortable={true}
         sort={sort}
         onSortChange={(e: GridSortChangeEvent) => {
           setSort(e.sort);
         }}
       >
+        <GridToolbar>
+          <Button onClick={load} themeColor="primary">
+            Load Employee
+          </Button>
+
+          <Button onClick={() => setshowAddDlg(true)} themeColor="primary">
+            Add Employee
+          </Button>
+        </GridToolbar>
         <Column field="id" title="Id" width="80px" />
         <Column field="userName" title="User Name" width="180px" />
         <Column field="fullName" title="Name" width="250px" />
@@ -85,8 +74,8 @@ export const UserList = observer(() => {
         <Column cell={EditDelButton} title="Command" width="200px" />
       </Grid>
 
-      {showAddDlg && <AddUser showDlg={() => setshowAddDlg(false)} mode="Add User" />}
-      {showEditDlg && <EditUser selUser={selectedUser!} showDlg={() => setshowEditDlg(false)} />}
+      {showAddDlg && <AddEmp showDlg={() => setshowAddDlg(false)} mode="Add Employee" />}
+      {showEditDlg && <EditEmp selEmp={selectedEmp!} showDlg={() => setshowEditDlg(false)} />}
     </div>
   );
 });

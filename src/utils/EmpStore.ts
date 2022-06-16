@@ -1,29 +1,29 @@
 import { makeAutoObservable, configure, runInAction, toJS } from "mobx";
 import { useContext, createContext } from "react";
-import { request } from "./utils/request";
-import { User } from "./utils/user";
+import { request } from "./request";
+import { Emp } from "./empInterface";
 configure({ enforceActions: "always" });
 
-class UserStore {
-  private _users: User[] = [];
+class EmpStore {
+  private _emps: Emp[] = [];
   private _error: any;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  get users(): User[] {
-    return toJS(this._users);
+  get emps(): Emp[] {
+    return toJS(this._emps);
   }
 
   // Load action
-  load = async () => {
+  load1 = async () => {
     runInAction(() => {
       let that = this;
       request
-        .get("User/")
+        .get("Emp/")
         .then((res) => {
-          that._users = res.data;
+          that._emps = res.data;
         })
         .catch((error) => {
           that._error = error.data;
@@ -32,12 +32,24 @@ class UserStore {
     });
   };
 
-  // Add action
-  addUser(user: User) {
+  load = () => {
     request
-      .post("User/", user)
+      .get("Emp/")
       .then((res) => {
-        this._users = res.data;
+        this._emps = res.data;
+      })
+      .catch((error) => {
+        this._error = error.data;
+        console.log(error);
+      });
+  };
+
+  // Add action
+  addEmp(emp: Emp) {
+    request
+      .post("Emp/", emp)
+      .then((res) => {
+        this._emps = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -45,12 +57,12 @@ class UserStore {
   }
 
   // Edit action
-  editUser(user: User) {
-    console.log(user);
+  editEmp(emp: Emp) {
+    console.log(emp);
     request
-      .put("User/" + user.id, user)
+      .put("Emp/" + emp.id, emp)
       .then((res) => {
-        this._users = res.data;
+        this._emps = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -58,11 +70,11 @@ class UserStore {
   }
 
   // Delete action
-  deleteUser(id: number) {
+  deleteEmp(id: number) {
     request
-      .delete("User/" + id)
+      .delete("Emp/" + id)
       .then((res) => {
-        this._users = res.data;
+        this._emps = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -71,7 +83,7 @@ class UserStore {
 }
 
 // useContext
-const userStoreContext = createContext(new UserStore());
-export const useUserStore = () => {
-  return useContext(userStoreContext);
+const empStoreContext = createContext(new EmpStore());
+export const useEmpStore = () => {
+  return useContext(empStoreContext);
 };

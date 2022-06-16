@@ -2,22 +2,23 @@ import { useState } from "react";
 import { Form, Field, FormElement, FormRenderProps } from "@progress/kendo-react-form";
 import { Button } from "@progress/kendo-react-buttons";
 import { Dialog } from "@progress/kendo-react-dialogs";
-import { User } from "../utils/user";
-import { useUserStore } from "../store";
+import { Emp } from "../utils/empInterface";
+
 import { FormCheckbox, FormComboBox, FormDatePicker, FormInput } from "../utils/formCoponents";
 import { emailValidator } from "../utils/validation";
 import Moment from "moment";
 import { genderData } from "../utils/dataDefault";
 import "@progress/kendo-theme-material";
+import { useEmpStore } from "../utils/EmpStore";
 
 interface IProperties {
   showDlg: () => void;
   mode: string;
 }
 
-export const AddUser = (props: IProperties) => {
-  // User Store
-  const { load, addUser } = useUserStore();
+export const AddEmp = (props: IProperties) => {
+  // Emp Store
+  const { load, addEmp } = useEmpStore();
 
   // set data
   const [userName, setUserName] = useState("");
@@ -31,7 +32,7 @@ export const AddUser = (props: IProperties) => {
   // handle submit
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const newUser: User = {
+    const newEmp: Emp = {
       id: 0,
       userName: userName,
       password: password,
@@ -41,7 +42,7 @@ export const AddUser = (props: IProperties) => {
       email: email,
       isAdmin: isAdmin,
     };
-    addUser(newUser);
+    addEmp(newEmp);
     load();
     props.showDlg();
   };
@@ -69,6 +70,7 @@ export const AddUser = (props: IProperties) => {
                   <Field
                     name={"password"}
                     value={password}
+                    type="password"
                     onChange={(element: any) => setPassword(element.target.value)}
                     component={FormInput}
                     label={"Password"}
@@ -114,7 +116,7 @@ export const AddUser = (props: IProperties) => {
                     validator={emailValidator}
                   />
                 </div>
-                <div className={`mb-3 visibility: ${props.mode === "Add User" ? "visible" : "hidden"}`}>
+                <div className={`mb-3 visibility: ${props.mode === "Add Employee" ? "visible" : "hidden"}`}>
                   <Field
                     name={"isAdmin"}
                     label={"Admin Permission"}
@@ -125,14 +127,15 @@ export const AddUser = (props: IProperties) => {
                 </div>
               </fieldset>
               <div>
-                <Button className="btnCancel" onClick={props.showDlg}>
+                <Button onClick={props.showDlg}>
                   Cancel
                 </Button>
                 <Button
-                  className="btnSubmit"
+                  className="ml-3"
                   type={"submit"}
                   onClick={handleSubmit}
                   disabled={!formRenderProps.allowSubmit}
+                  themeColor="primary"
                 >
                   Submit
                 </Button>
