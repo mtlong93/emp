@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useEmpStore } from "../utils/EmpStore";
+import { useEmpStore } from "../utils/empStore";
 import { useSessionStore } from "../utils/sessionStore";
 import { AddEmp } from "./AddEmp";
 
@@ -15,14 +15,13 @@ const navigation = [
 
 export const Wellcome = () => {
   useEffect(() => {
-    console.log("useEffect Load");
     load();
   }, []);
   // Show add dialog
   const [showAddDlg, setshowAddDlg] = useState(false);
   const { load } = useEmpStore();
   const { user } = useSessionStore();
-  console.log("session: ", user);
+
   return (
     <div className="relative bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">

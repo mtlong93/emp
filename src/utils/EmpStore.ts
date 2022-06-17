@@ -1,7 +1,7 @@
 import { makeAutoObservable, configure, runInAction, toJS } from "mobx";
 import { useContext, createContext } from "react";
 import { request } from "./request";
-import { Emp } from "./empInterface";
+import { Emp } from "./interface";
 configure({ enforceActions: "always" });
 
 class EmpStore {

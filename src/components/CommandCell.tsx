@@ -1,6 +1,6 @@
 import { Button } from "@progress/kendo-react-buttons";
-import { useEmpStore } from "../utils/EmpStore";
-import { Emp } from "../utils/empInterface";
+import { useEmpStore } from "../utils/empStore";
+import { Emp } from "../utils/interface";
 import "@progress/kendo-theme-material";
 
 interface IProperties {

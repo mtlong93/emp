@@ -1,6 +1,5 @@
 import { makeAutoObservable, toJS } from "mobx";
 import { useContext, createContext } from "react";
-import { Emp } from "./empInterface";
 
 class Session {
     private _user: string = "";
@@ -14,7 +13,6 @@ class Session {
     }
     
     setSession = (session: string) => {
-      console.log("setSession");
       this._user = session;
     };
   }
